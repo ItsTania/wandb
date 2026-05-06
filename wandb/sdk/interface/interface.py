@@ -806,7 +806,6 @@ class InterfaceBase(abc.ABC):
         nowait: bool = False,
     ) -> None:
         o = pb.OutputLoggerRecord(line=line)
-        o.timestamp.GetCurrentTime()
         self._publish_output_logger(o, nowait=nowait)
 
     @abc.abstractmethod

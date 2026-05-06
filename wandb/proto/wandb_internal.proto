@@ -320,12 +320,8 @@ message OutputRawResult {}
  * OutputLoggerRecord: log output from run.write_logs for the Logs tab.
  */
 message OutputLoggerRecord {
-  google.protobuf.Timestamp timestamp = 1;
-  string line = 2;
-  _RecordInfo _info = 200;
+  string line = 1;
 }
-
-message OutputLoggerResult {}
 
 /*
  * MetricRecord: wandb/sdk/wandb_metric/Metric
