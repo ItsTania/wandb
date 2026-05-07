@@ -29,6 +29,7 @@ class WandbLoggerHandler(logging.Handler):
     def __init__(self, run: Run, level: int = logging.NOTSET) -> None:
         super().__init__(level=level)
         self._run = run
+        self.setFormatter(logging.Formatter("%(levelname)s:%(name)s:%(message)s"))
 
     def emit(self, record: logging.LogRecord) -> None:
         try:
