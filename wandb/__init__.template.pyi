@@ -59,7 +59,6 @@ __all__ = (
     "plot_table",
     "restore",
     "Run",
-    "WandbLoggerHandler",
 )
 
 import os
@@ -87,7 +86,6 @@ from wandb.errors.term import termerror, termlog, termsetup, termwarn
 from wandb.sdk import Artifact, Settings, wandb_config, wandb_metric, wandb_summary
 from wandb.sdk.artifacts.artifact_ttl import ArtifactTTL
 from wandb.sdk.lib.filesystem import PolicyName
-from wandb.sdk.lib.logger_capture import WandbLoggerHandler
 from wandb.sdk.lib.paths import FilePathStr, StrPath
 from wandb.sdk.wandb_run import Run
 from wandb.sdk.wandb_setup import _WandbSetup

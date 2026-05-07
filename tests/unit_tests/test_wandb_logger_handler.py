@@ -1,7 +1,7 @@
 import logging
 from unittest.mock import MagicMock
 
-from wandb.sdk.lib.logger_capture import WandbLoggerHandler
+from wandb.sdk.lib.logger_capture import LoggerHandler
 
 
 def _make_logger(name: str) -> logging.Logger:
@@ -21,28 +21,30 @@ def _make_mock_run() -> MagicMock:
 def test_handler_calls_write_logs():
     """The handler calls run.write_logs with the formatted message."""
     run = _make_mock_run()
-    handler = WandbLoggerHandler(run, level=logging.INFO)
+    handler = LoggerHandler(run, level=logging.INFO)
     logger = _make_logger("test_basic")
+
     logger.addHandler(handler)
     try:
         logger.info("hello world")
     finally:
         logger.removeHandler(handler)
 
-    run.write_logs.assert_called_once()
-    text = run.write_logs.call_args[0][0]
-    assert "hello world" in text
+    run.write_logs.assert_called_once_with(
+        "INFO:tests.unit_tests.test_wandb_logger_handler.test_basic:hello world",
+    )
 
 
 def test_handler_does_not_propagate_errors():
     """A broken run.write_logs must not crash the user's logger call."""
     run = _make_mock_run()
     run.write_logs.side_effect = RuntimeError("write_logs broke")
-    handler = WandbLoggerHandler(run, level=logging.INFO)
+    handler = LoggerHandler(run, level=logging.INFO)
     logger = _make_logger("test_error_handling")
+
     logger.addHandler(handler)
     try:
-        # This should NOT raise
+        # This should NOT raise:
         logger.error("this should not crash")
     finally:
         logger.removeHandler(handler)
@@ -52,6 +54,5 @@ def test_handler_does_not_propagate_errors():
 
 def test_handler_default_level_is_notset():
     """Default level is NOTSET, capturing everything."""
-    run = _make_mock_run()
-    handler = WandbLoggerHandler(run)
+    handler = LoggerHandler(_make_mock_run())
     assert handler.level == logging.NOTSET

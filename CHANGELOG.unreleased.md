@@ -19,7 +19,8 @@ Section headings should be at level 3 (e.g. `### Added`).
 - The `stop_on_fatal_error` setting to stop a run (using `stop_fn`) after a fatal error that prevents it from uploading metrics (@timoffex in https://github.com/wandb/wandb/pull/11774)
 - New `wandb.sandbox` package and the `wandb beta sandbox` cli for using wandb sandbox (@pingleiwandb in https://github.com/wandb/wandb/pull/11606)
 - The `finish_timeout` and `finish_timeout_raises` settings (@timoffex in https://github.com/wandb/wandb/pull/11737)
-- `run.write_logs()` method to write text directly to the Logs tab to give users more control over logged output over what console capture alone previously provided. Includes `WandbLoggerHandler` as a convenience integration for Python's logging module (@itstania in https://github.com/wandb/wandb/pull/11702)
+- The `run.write_logs()` method to write text directly to the Logs tab (@itstania in https://github.com/wandb/wandb/pull/11702)
+- The `capture_loggers` setting to automatically capture `logging.Logger` logs using `write_logs()` (@itstania in https://github.com/wandb/wandb/pull/11702)
 
 ### Changed
 
