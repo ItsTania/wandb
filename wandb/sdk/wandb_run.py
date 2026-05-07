@@ -1978,16 +1978,15 @@ class Run:
         self._log(data=data, step=step, commit=commit)
 
     @_log_to_run
-    @_raise_if_finished
     @_attach
     def write_logs(self, text: str) -> None:
         """Write text to the run's Logs tab.
 
-        Enables more control over what appears in the Logs tab compared to automatic stdout/stderr console capture.
-        Text written with this method is not processed through terminal emulation.
+        Use ``write_logs`` to output text to the Logs tab without going through stdout/stderr console capture.
+        This enables more control over what appears in the Logs tab as text can be pre-processed.
+        Calls made after the run has finished are silently ignored.
 
-        For Python's logging module, use the built-in
-        ``WandbLoggerHandler`` convenience integration.
+        ``wandb.WandbLoggerHandler`` wraps this function as a convenience integration for Python's ``logging`` module.
 
         Args:
             text: The text to write. A trailing newline is added if not present.
@@ -1995,6 +1994,8 @@ class Run:
         """
         if not text.endswith("\n"):
             text += "\n"
+        if self._is_finished:
+            return  # TODO: Remove once WandbLoggerHandler auto-detaches on run finish and add raise_if_finished decorator back in.
         if self._backend and self._backend.interface:
             self._backend.interface.publish_output_logger(text, nowait=True)
 
