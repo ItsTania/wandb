@@ -198,10 +198,9 @@ func (s *Sender) Finish() {
 	}
 }
 
-// StreamLoggerOutput writes pre-formatted log lines to the run's console logs.
+// StreamLoggerOutput appends a line to the run's console logs.
 //
-// Unlike StreamLogs, this bypasses terminal emulation — the line content
-// is written directly without interpreting escape sequences.
+// Lines are sent from Run.write_logs rather than console capture on the Python side.
 func (s *Sender) StreamLoggerOutput(record *spb.OutputLoggerRecord) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
