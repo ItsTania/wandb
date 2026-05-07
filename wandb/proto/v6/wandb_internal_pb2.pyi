@@ -399,18 +399,10 @@ class OutputRawResult(_message.Message):
     def __init__(self) -> None: ...
 
 class OutputLoggerRecord(_message.Message):
-    __slots__ = ("timestamp", "line", "_info")
-    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("line",)
     LINE_FIELD_NUMBER: _ClassVar[int]
-    _INFO_FIELD_NUMBER: _ClassVar[int]
-    timestamp: _timestamp_pb2.Timestamp
     line: str
-    _info: _wandb_base_pb2._RecordInfo
-    def __init__(self, timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., line: _Optional[str] = ..., _info: _Optional[_Union[_wandb_base_pb2._RecordInfo, _Mapping]] = ...) -> None: ...
-
-class OutputLoggerResult(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
+    def __init__(self, line: _Optional[str] = ...) -> None: ...
 
 class MetricRecord(_message.Message):
     __slots__ = ("name", "glob_name", "step_metric", "step_metric_index", "options", "summary", "goal", "_control", "expanded_from_glob", "_info")
