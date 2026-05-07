@@ -1996,8 +1996,8 @@ class Run:
             text += "\n"
         if self._is_finished:
             return  # TODO: Remove once WandbLoggerHandler auto-detaches on run finish and add raise_if_finished decorator back in.
-        if self._backend and self._backend.interface:
-            self._backend.interface.publish_output_logger(text, nowait=True)
+        if self._interface:
+            self._interface.publish_output_logger(text, nowait=True)
 
     @_log_to_run
     @_raise_if_finished
