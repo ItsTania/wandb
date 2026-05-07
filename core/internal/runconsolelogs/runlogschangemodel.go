@@ -139,12 +139,15 @@ func (o *RunLogsChangeModel) LineSupplier(streamPrefix, streamLabel string) *Run
 }
 
 // NextLine allocates a new line in the output buffer.
-func (o *RunLogsChangeModel) NextLine(streamPrefix, streamLabel string) RunLogsLineRef {
+func (o *RunLogsChangeModel) NextLine(
+	streamPrefix, streamLabel, content string,
+) RunLogsLineRef {
 	line := &RunLogsLine{}
 	line.StreamPrefix = streamPrefix
 	line.StreamLabel = streamLabel
 	line.MaxLength = o.maxLineLength
 	line.Timestamp = o.getNow()
+	line.Content = []rune(content)
 
 	lineNum := o.firstLineNum + len(o.lines)
 	o.lines = append(o.lines, line)
@@ -159,26 +162,6 @@ func (o *RunLogsChangeModel) NextLine(streamPrefix, streamLabel string) RunLogsL
 	return RunLogsLineRef{output: o, lineNum: lineNum}
 }
 
-// AppendLine allocates a new line with pre-set content, bypassing terminal
-// emulation. Used for structured log output (e.g. run.write_logs).
-func (o *RunLogsChangeModel) AppendLine(streamPrefix, content string) {
-	line := &RunLogsLine{}
-	line.StreamPrefix = streamPrefix
-	line.MaxLength = o.maxLineLength
-	line.Timestamp = o.getNow()
-	line.Content = []rune(content)
-
-	lineNum := o.firstLineNum + len(o.lines)
-	o.lines = append(o.lines, line)
-
-	if len(o.lines) > o.maxLines {
-		o.firstLineNum += 1
-		o.lines = slices.Delete(o.lines, 0, 1)
-	}
-
-	o.onChange(lineNum, line)
-}
-
 // RunLogsLineSupplier allows a terminal emulator to request new lines in the
 // output buffer.
 type RunLogsLineSupplier struct {
@@ -188,7 +171,7 @@ type RunLogsLineSupplier struct {
 }
 
 func (s *RunLogsLineSupplier) NextLine() terminalemulator.Line {
-	return s.output.NextLine(s.streamPrefix, s.streamLabel)
+	return s.output.NextLine(s.streamPrefix, s.streamLabel, "")
 }
 
 // RunLogsLineRef is a reference to a console logs line.
