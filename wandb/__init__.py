@@ -79,6 +79,7 @@ from wandb.sdk.wandb_run import Run
 
 # Artifact import types
 from wandb.sdk.artifacts.artifact_ttl import ArtifactTTL
+from wandb.sdk.lib.logger_capture import WandbLoggerHandler
 
 
 # globals
@@ -209,4 +210,5 @@ __all__ = (
     "unwatch",
     "plot_table",
     "Run",
+    "WandbLoggerHandler",
 )

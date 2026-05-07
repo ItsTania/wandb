@@ -21,7 +21,7 @@ class WandbLoggerHandler(logging.Handler):
         import wandb
 
         with wandb.init() as run:
-            handler = WandbLoggerHandler(run)
+            handler = wandb.WandbLoggerHandler(run)
             handler.setLevel(logging.INFO)
             logging.getLogger("my_app").addHandler(handler)
     """
